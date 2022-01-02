@@ -23,7 +23,7 @@ XIANG_DB_AESKEY="ZLX=T&f6refeCh-ro*r@"
 在项目目录中运行
 
 ```bash
-cd your_project_dir
+cd your_project_root
 yao migrate && yao run flows.menu
 
 ```
@@ -33,7 +33,7 @@ yao migrate && yao run flows.menu
 在项目目录中运行
 
 ```bash
-cd your_project_dir
+cd your_project_root
 yao start
 ```
 
