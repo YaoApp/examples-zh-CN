@@ -1,4 +1,6 @@
-# examples
+# 关联查询
+
+[查看文档](https://yaoapps.com/doc/e.API%E5%8F%82%E8%80%83/j.%E6%95%B0%E6%8D%AE%E8%A1%A8%E6%A0%BC#%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2%201)
 
 ## 环境配置
 
@@ -22,7 +24,7 @@ XIANG_DB_AESKEY="ZLX=T&f6refeCh-ro*r@"
 
 ```bash
 cd your_project_dir
-xiang migrate && xiang run flows.menu
+yao migrate && yao run flows.menu
 
 ```
 
@@ -32,7 +34,7 @@ xiang migrate && xiang run flows.menu
 
 ```bash
 cd your_project_dir
-xiang start
+yao start
 ```
 
 ## 访问后台
