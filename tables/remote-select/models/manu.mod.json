@@ -1,0 +1,22 @@
+{
+  "name": "厂商",
+  "table": { "name": "manu", "comment": "渠道表", "engine": "InnoDB" },
+  "columns": [
+    {
+      "label": "ID",
+      "name": "id",
+      "type": "ID",
+      "comment": "ID"
+    },
+    {
+      "label": "名称",
+      "name": "name",
+      "type": "string",
+      "comment": "厂商名称"
+    }
+  ],
+  "values": [
+    { "id": 1, "name": "象传智慧" },
+    { "id": 2, "name": "云道天成" }
+  ]
+}

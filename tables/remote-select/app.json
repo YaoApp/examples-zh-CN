@@ -1,0 +1,10 @@
+{
+  "name": "Yao示例-关联查询",
+  "short": "关联查询",
+  "version": "1.0.0",
+  "description": "Yao示例-关联查询",
+  "plugins": {},
+  "option": {
+    "index": "/table/user"
+  }
+}

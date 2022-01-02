@@ -1,0 +1,39 @@
+{
+  "name": "用户",
+  "table": { "name": "user", "comment": "用户表", "engine": "InnoDB" },
+  "columns": [
+    {
+      "label": "ID",
+      "name": "id",
+      "type": "ID",
+      "comment": "ID"
+    },
+    {
+      "label": "厂商",
+      "name": "manu_id",
+      "type": "bigInteger",
+      "comment": "厂商ID"
+    },
+    {
+      "label": "姓名",
+      "name": "name",
+      "type": "string",
+      "comment": "用户姓名"
+    }
+  ],
+  "relations": {
+    "manu": {
+      "type": "hasOne",
+      "model": "manu",
+      "key": "id",
+      "foreign": "manu_id",
+      "query": {}
+    }
+  },
+  "values": [
+    { "id": 1, "manu_id": 1, "name": "张无忌" },
+    { "id": 2, "manu_id": 1, "name": "李光富" },
+    { "id": 3, "manu_id": 2, "name": "李木婷" },
+    { "id": 4, "manu_id": 2, "name": "赵长青" }
+  ]
+}
