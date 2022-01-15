@@ -1,0 +1,12 @@
+{
+  "label": "查询结果处理",
+  "version": "1.0.0",
+  "description": "Before:Save",
+  "nodes": [
+    {
+      "name": "处理后的输入数据",
+      "script": "format"
+    }
+  ],
+  "output": "{{$res.处理后的输入数据}}"
+}

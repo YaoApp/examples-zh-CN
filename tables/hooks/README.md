@@ -240,6 +240,8 @@ function main(args, out, res) {
 }
 ```
 
+**以上为代码片段，[查看完成示例](tables/user.tab.json)**
+
 `flows/hooks/user/tags_color.flow.json` 实现标签颜色检测，如果为空，则将颜色设置为灰色
 
 ```json
@@ -272,6 +274,10 @@ function main(args, out, res) {
   return data; // 返回新结果
 }
 ```
+
+[查看 flow 示例 flows/hooks/user/ ](flows/hooks/user/)
+
+**调试方法**
 
 调试表格 Find 处理器 ( 与 find API 返回结果一致 )
 
@@ -306,11 +312,120 @@ ID=1 的用户数据中，`默认颜色` 标签被设置为灰色，在数据表
 }
 ```
 
+### 2. Search Hook
+
+### 3. Save Hook
+
+#### 3.1 `before:save`
+
+当用户 ID 大于 100 时, 更新 ID=101 的数据记录
+
+使用 `before:save` hook, 检查数据数据 ID，如果 ID 大于 100，则将 ID 设置为 101。
+
+在 `user.tab.json` 数据表格描述中，声明 `before:save` hook 关联 `flows.hooks.user.before_save` 处理器
+
+```json
+{
+  "name": "用户",
+  "version": "1.0.0",
+  "decription": "用户",
+  "bind": { "model": "user", "withs": { "tags": {}, "extra": {} } },
+  "hooks": {
+    "before:save": "flows.hooks.user.before_save"
+  },
+  "apis": {},
+  "columns": {}
+}
+```
+
 **以上为代码片段，[查看完成示例](tables/user.tab.json)**
 
-### Search Hook
+`flows/hooks/user/before_save.flow.json` 实现检查数据数据 ID，如果 ID 大于 100，则将 ID 设置为 101
 
-### Save Hook
+```json
+{
+  "label": "查询结果处理",
+  "version": "1.0.0",
+  "description": "Before:Save",
+  "nodes": [
+    {
+      "name": "处理后的输入数据",
+      "script": "format"
+    }
+  ],
+  "output": "{{$res.处理后的输入数据}}"
+}
+```
+
+`flows/hooks/user/before_save.format.js` 数据处理脚本
+
+```javascript
+function main(args, out, res) {
+  var data = args[0] || {}; // 读取表格 Save API 输入数据
+  if (parseInt(data.id) > 100) {
+    data["id"] = 101; // 如果ID大于 100, 将ID数值设置为101
+    args[0] = data;
+  }
+  return args; // 返回更新后的数据
+}
+```
+
+**调试方法**
+
+验证 Hook 处理逻辑, 如果用户 ID 大于 100, 则将 ID 修改为 101
+
+`yao run flows.hooks.user.before_save '::{"id":102, "name":"李小龙"}'`
+
+```json
+[
+  {
+    "id": 101,
+    "name": "李小龙"
+  }
+]
+```
+
+调试表格 Save 处理器 ( 与 Save API 返回结果一致 )
+
+`yao run xiang.table.save user '::{"id":102, "name":"李小龙"}'`
+
+```json
+101
+```
+
+运行 Find 处理器，验证 101 数据是否被修改
+
+`yao run xiang.table.find user 101`
+
+```json
+--------------------------------------
+{
+    "extra": {
+        "id": 2,
+        "title": "工程师",
+        "user_id": 101
+    },
+    "gender": "男",
+    "id": 101,
+    "name": "李小龙",
+    "tags": [
+        {
+            "color": "#FF0000",
+            "id": 3,
+            "label": "火箭",
+            "user_id": 101
+        },
+        {
+            "color": "#FF6600",
+            "id": 4,
+            "label": "现代",
+            "user_id": 101
+        }
+    ]
+}
+```
+
+#### 3.2 `after:save`
 
 ## 数据处理方式
 
@@ -319,11 +434,3 @@ ID=1 的用户数据中，`默认颜色` 标签被设置为灰色，在数据表
 ### Script 脚本
 
 ## 常用数据格式转换 Process
-
-```
-
-```
-
-```
-
-```
