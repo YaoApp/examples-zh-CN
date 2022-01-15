@@ -25,7 +25,7 @@
 }
 ```
 
-**以上为代码片段，非完整表格描述**
+**以上为代码片段，[查看完成示例](tables/user.tab.json)**
 
 ## 数据表格 Hook 一览表
 
@@ -77,9 +77,11 @@
 
 [查看数据模型 models ](models)
 
-### Find Hook
+### 1. Find Hook
 
-#### 实现如果用户 ID 大于 100，则显示 ID=101 职务信息
+#### 1.1 `before:find`
+
+实现如果用户 ID 大于 100，则显示 ID=101 的用户信息
 
 使用 `before:find` hook, 检查用户 ID，如果用户 ID 大于 100，则将 ID 数值设定为 101。
 
@@ -99,9 +101,9 @@
 }
 ```
 
-**以上为代码片段，非完整表格描述**
+**以上为代码片段，[查看完成示例](tables/user.tab.json)**
 
-`flows/hooks/user/with_extra.flow.json` 实现用户 ID 检测逻辑，如果用户 ID 大于 100，则显示 ID=101 用户职务信息。
+`flows/hooks/user/with_extra.flow.json` 实现用户 ID 检测逻辑，如果用户 ID 大于 100，则显示 ID=101 的用户信息。
 
 ```json
 {
@@ -130,95 +132,91 @@ function main(args, out, res) {
 }
 ```
 
+[查看 flow 示例 flows/hooks/user/ ](flows/hooks/user/)
+
+**调试方法**
+
 可以使用 `yao run` 对处理器进行调试
 
-```bash
-yao run flows.hooks.user.with_extra 1
+当 ID 小于 100 时， 返回原始输入
 
-# 返回值
-# 当 ID 小于 100 时， 返回原始输入
-# [
-#     "1"
-# ]
+`yao run flows.hooks.user.with_extra 1`
+
+```json
+["1"]
 ```
 
-```bash
-yao run flows.hooks.user.with_extra 102
+当 ID 大于 100 时，返回用户 101
 
-# 返回值
-# 当 ID 大于 100 时， 添加  with extra
-# [
-#     "101"
-# ]
+`yao run flows.hooks.user.with_extra 102`
+
+```json
+["101"]
 ```
 
 调试表格 Find 处理器 ( 与 find API 返回结果一致 )
 
-```bash
-yao run flows.hooks.user.with_extra 1
+当 ID 小于 100 时， 返回给定 ID 用户资料
 
-# 返回值
-# 当 ID 小于 100 时
-# {
-#     "extra": {
-#         "id": 1,
-#         "title": "设计师",
-#         "user_id": 1
-#     },
-#     "gender": "男",
-#     "id": 1,
-#     "name": "张无忌",
-#     "tags": [
-#         {
-#             "color": "#FF0000",
-#             "id": 1,
-#             "label": "大侠",
-#             "user_id": 1
-#         },
-#         {
-#             "color": "#FF6600",
-#             "id": 2,
-#             "label": "古代",
-#             "user_id": 1
-#         }
-#     ]
-# }
+`yao run xiang.table.find 1`
 
+```json
+{
+  "extra": {
+    "id": 1,
+    "title": "设计师",
+    "user_id": 1
+  },
+  "gender": "男",
+  "id": 1,
+  "name": "张无忌",
+  "tags": [
+    {
+      "color": "#FF0000",
+      "id": 1,
+      "label": "大侠",
+      "user_id": 1
+    },
+    {
+      "color": "#FF6600",
+      "id": 2,
+      "label": "古代",
+      "user_id": 1
+    }
+  ]
+}
 ```
 
-```bash
-yao run flows.hooks.user.with_extra 102
+当 ID 大于 100 时，返回 ID=101 的用户资料
 
-# 返回值
-# 当 ID 大于 100 时
-# {
-#     "extra": {
-#         "id": 2,
-#         "title": "工程师",
-#         "user_id": 101
-#     },
-#     "gender": "男",
-#     "id": 101,
-#     "name": "赵长青",
-#     "tags": [
-#         {
-#             "color": "#FF0000",
-#             "id": 3,
-#             "label": "火箭",
-#             "user_id": 101
-#         },
-#         {
-#             "color": "#FF6600",
-#             "id": 4,
-#             "label": "现代",
-#             "user_id": 101
-#         }
-#     ]
-# }
+`yao run xiang.table.find 102`
 
+```json
+{
+  "extra": {
+    "id": 2,
+    "title": "工程师",
+    "user_id": 101
+  },
+  "gender": "男",
+  "id": 101,
+  "name": "赵长青",
+  "tags": [
+    {
+      "color": "#FF0000",
+      "id": 3,
+      "label": "火箭",
+      "user_id": 101
+    },
+    {
+      "color": "#FF6600",
+      "id": 4,
+      "label": "现代",
+      "user_id": 101
+    }
+  ]
+}
 ```
-
-[查看示例 flows/hooks/user/ ](flows/hooks/user/)
 
 ### Search Hook
 
