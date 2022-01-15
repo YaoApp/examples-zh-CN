@@ -1,0 +1,29 @@
+{
+  "label": "根据性别添加标签",
+  "version": "1.0.0",
+  "description": "After:Save",
+  "nodes": [
+    {
+      "name": "用户",
+      "process": "models.user.Find",
+      "args": ["{{$in.0}}", { "withs": { "tags": {} } }]
+    },
+    {
+      "name": "标签",
+      "script": "compute"
+    },
+    {
+      "name": "保存标签",
+      "process": "xiang.helper.Case",
+      "args": [
+        {
+          "when": [{ "用户ID存在": "{{$res.标签.user_id}}", "is": "notnull" }],
+          "name": "保存标签",
+          "process": "models.tag.Save",
+          "args": ["{{$res.标签}}"]
+        }
+      ]
+    }
+  ],
+  "output": "{{$in}}"
+}

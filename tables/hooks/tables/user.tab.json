@@ -6,7 +6,8 @@
   "hooks": {
     "before:find": "flows.hooks.user.with_extra",
     "after:find": "flows.hooks.user.tags_color",
-    "before:save": "flows.hooks.user.before_save"
+    "before:save": "flows.hooks.user.before_save",
+    "after:save": "flows.hooks.user.add_tag"
   },
   "apis": {},
   "columns": {},

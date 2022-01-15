@@ -318,7 +318,7 @@ ID=1 的用户数据中，`默认颜色` 标签被设置为灰色，在数据表
 
 #### 3.1 `before:save`
 
-当用户 ID 大于 100 时, 更新 ID=101 的数据记录
+实现当用户 ID 大于 100 时, 更新 ID=101 的数据记录
 
 使用 `before:save` hook, 检查数据数据 ID，如果 ID 大于 100，则将 ID 设置为 101。
 
@@ -340,11 +340,11 @@ ID=1 的用户数据中，`默认颜色` 标签被设置为灰色，在数据表
 
 **以上为代码片段，[查看完成示例](tables/user.tab.json)**
 
-`flows/hooks/user/before_save.flow.json` 实现检查数据数据 ID，如果 ID 大于 100，则将 ID 设置为 101
+`flows/hooks/user/before_save.flow.json` 实现检查数据 ID，如果 ID 大于 100，则将 ID 设置为 101
 
 ```json
 {
-  "label": "查询结果处理",
+  "label": "表单提交数据预处理",
   "version": "1.0.0",
   "description": "Before:Save",
   "nodes": [
@@ -427,6 +427,135 @@ function main(args, out, res) {
 ```
 
 #### 3.2 `after:save`
+
+实现如果用户性别为 女 则自动添加一个 小姐姐 的标签， 如果用户性别为 男 则自动添加一个 小哥哥 的标签。
+
+使用 `after:save` hook, 保存用户资料之后，根据用户性别，添加一个标签。
+
+在 `user.tab.json` 数据表格描述中，声明 `after:save` hook 关联 `flows.hooks.user.add_tag` 处理器
+
+```json
+{
+  "name": "用户",
+  "version": "1.0.0",
+  "decription": "用户",
+  "bind": { "model": "user", "withs": { "tags": {}, "extra": {} } },
+  "hooks": {
+    "after:save": "flows.hooks.user.add_tag"
+  },
+  "apis": {},
+  "columns": {}
+}
+```
+
+**以上为代码片段，[查看完成示例](tables/user.tab.json)**
+
+`flows/hooks/user/add_tag.flow.json` 实现检查用户性别，并根据性别，调用 `models.tag.Save` 处理器添加标签
+
+```json
+{
+  "label": "根据性别添加标签",
+  "version": "1.0.0",
+  "description": "After:Save",
+  "nodes": [
+    {
+      "name": "用户",
+      "process": "models.user.Find",
+      "args": ["{{$in.0}}", { "withs": { "tags": {} } }]
+    },
+    {
+      "name": "标签",
+      "script": "compute"
+    },
+    {
+      "name": "保存标签",
+      "process": "xiang.helper.Case",
+      "args": [
+        {
+          "when": [{ "用户ID存在": "{{$res.标签.user_id}}", "is": "notnull" }],
+          "name": "保存标签",
+          "process": "models.tag.Save",
+          "args": ["{{$res.标签}}"]
+        }
+      ]
+    }
+  ],
+  "output": "{{$in}}"
+}
+```
+
+`flows/hooks/user/add_tag.compute.js` 数据处理脚本
+
+```javascript
+function main(args, out, res) {
+  var user = res.用户 || {};
+  var tags = user.tags || [];
+  var gender = user.gender || "未知";
+
+  // 检查是否已有 小哥哥/小姐姐标签, 则忽略处理
+  for (var i in tags) {
+    if (tags[i].label == "小哥哥" || tags[i].label == "小姐姐") {
+      return {};
+    }
+  }
+
+  if (gender == "男") {
+    return { user_id: user.id, label: "小哥哥", color: "#0398e2" };
+  } else if (gender == "女") {
+    return { user_id: user.id, label: "小姐姐", color: "#d80128" };
+  }
+  return {};
+}
+```
+
+[查看 flow 示例 flows/hooks/user/ ](flows/hooks/user/)
+
+**调试**
+
+调试表格 Save 处理器 ( 与 Save API 返回结果一致 )
+
+`yao run xiang.table.save user '::{"id":102, "name":"李小龙"}'`
+
+```json
+101
+```
+
+运行 Find 处理器，验证 101 数据是否被修改
+
+`yao run xiang.table.find user 101`
+
+```json
+{
+  "extra": {
+    "id": 2,
+    "title": "工程师",
+    "user_id": 101
+  },
+  "gender": "男",
+  "id": 101,
+  "name": "李小龙",
+  "tags": [
+    {
+      "color": "#FF0000",
+      "id": 3,
+      "label": "火箭",
+      "user_id": 101
+    },
+    {
+      "color": "#FF6600",
+      "id": 4,
+      "label": "现代",
+      "user_id": 101
+    },
+    {
+      "color": "#0398e2",
+      "id": 5,
+      "label": "小哥哥",
+      "user_id": 101
+    }
+  ]
+}
+```
 
 ## 数据处理方式
 
