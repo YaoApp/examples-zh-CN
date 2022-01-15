@@ -370,6 +370,8 @@ function main(args, out, res) {
 }
 ```
 
+[查看 flow 示例 flows/hooks/user/ ](flows/hooks/user/)
+
 **调试方法**
 
 验证 Hook 处理逻辑, 如果用户 ID 大于 100, 则将 ID 修改为 101
@@ -398,30 +400,29 @@ function main(args, out, res) {
 `yao run xiang.table.find user 101`
 
 ```json
---------------------------------------
 {
-    "extra": {
-        "id": 2,
-        "title": "工程师",
-        "user_id": 101
+  "extra": {
+    "id": 2,
+    "title": "工程师",
+    "user_id": 101
+  },
+  "gender": "男",
+  "id": 101,
+  "name": "李小龙",
+  "tags": [
+    {
+      "color": "#FF0000",
+      "id": 3,
+      "label": "火箭",
+      "user_id": 101
     },
-    "gender": "男",
-    "id": 101,
-    "name": "李小龙",
-    "tags": [
-        {
-            "color": "#FF0000",
-            "id": 3,
-            "label": "火箭",
-            "user_id": 101
-        },
-        {
-            "color": "#FF6600",
-            "id": 4,
-            "label": "现代",
-            "user_id": 101
-        }
-    ]
+    {
+      "color": "#FF6600",
+      "id": 4,
+      "label": "现代",
+      "user_id": 101
+    }
+  ]
 }
 ```
 
