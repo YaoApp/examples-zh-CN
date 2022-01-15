@@ -79,9 +79,9 @@
 
 ### Find Hook
 
-#### 实现如果用户 ID 大于 100，则显示职务信息
+#### 实现如果用户 ID 大于 100，则显示 ID=101 职务信息
 
-使用 `before:find` hook, 检查用户 ID，如果用户 ID 大于 100，则添加 `withs` 查询条件，同时查出用户扩展表数据。
+使用 `before:find` hook, 检查用户 ID，如果用户 ID 大于 100，则将 ID 数值设定为 101。
 
 在 `user.tab.json` 数据表格描述中，声明 `before:find` hook 关联 `flows.hooks.user.with_extra` 处理器
 
