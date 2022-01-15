@@ -1,0 +1,48 @@
+{
+  "name": "用户",
+  "table": { "name": "user", "comment": "用户表", "engine": "InnoDB" },
+  "columns": [
+    {
+      "label": "ID",
+      "name": "id",
+      "type": "ID",
+      "comment": "ID"
+    },
+    {
+      "label": "姓名",
+      "name": "name",
+      "type": "string",
+      "comment": "用户姓名"
+    },
+    {
+      "label": "性别",
+      "name": "gender",
+      "type": "enum",
+      "default": "未知",
+      "option": ["男", "女", "未知"],
+      "comment": "用户性别"
+    }
+  ],
+  "relations": {
+    "extra": {
+      "type": "hasOne",
+      "model": "extra",
+      "key": "user_id",
+      "foreign": "id",
+      "query": {}
+    },
+    "tags": {
+      "type": "hasMany",
+      "model": "tag",
+      "key": "user_id",
+      "foreign": "id",
+      "query": {}
+    }
+  },
+  "values": [
+    { "id": 1, "gender": "男", "name": "张无忌" },
+    { "id": 2, "gender": "未知", "name": "李光富" },
+    { "id": 3, "gender": "女", "name": "李木婷" },
+    { "id": 101, "gender": "男", "name": "赵长青" }
+  ]
+}

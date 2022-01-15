@@ -1,0 +1,28 @@
+{
+  "name": "用户",
+  "version": "1.0.0",
+  "decription": "用户",
+  "bind": { "model": "user", "withs": { "tags": {}, "extra": {} } },
+  "hooks": {
+    "before:find": "flows.hooks.user.with_extra"
+  },
+  "apis": {},
+  "columns": {},
+  "list": {
+    "primary": "id",
+    "layout": {
+      "columns": [{ "name": "ID", "width": 6 }],
+      "filters": []
+    },
+    "actions": {}
+  },
+  "edit": {
+    "primary": "id",
+    "layout": {
+      "fieldset": [{ "columns": [{ "name": "ID", "width": 6 }] }]
+    },
+    "actions": { "cancel": {} }
+  },
+  "insert": {},
+  "view": {}
+}

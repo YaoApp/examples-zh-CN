@@ -1,0 +1,12 @@
+{
+  "label": "查询条件处理",
+  "version": "1.0.0",
+  "description": "Before:Find",
+  "nodes": [
+    {
+      "name": "查询条件",
+      "script": "check"
+    }
+  ],
+  "output": "{{$res.查询条件}}"
+}

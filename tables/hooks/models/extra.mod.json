@@ -1,0 +1,29 @@
+{
+  "name": "扩展资料",
+  "table": { "name": "extra", "comment": "扩展资料表", "engine": "InnoDB" },
+  "columns": [
+    {
+      "label": "ID",
+      "name": "id",
+      "type": "ID",
+      "comment": "ID"
+    },
+    {
+      "label": "所属用户",
+      "name": "user_id",
+      "type": "bigInteger",
+      "comment": "所属用户"
+    },
+    {
+      "label": "职务",
+      "name": "title",
+      "type": "string",
+      "comment": "职务"
+    }
+  ],
+  "relations": {},
+  "values": [
+    { "id": 1, "user_id": 1, "title": "设计师" },
+    { "id": 2, "user_id": 101, "title": "工程师" }
+  ]
+}

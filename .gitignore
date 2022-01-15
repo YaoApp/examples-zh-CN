@@ -1,2 +1,3 @@
 .DS_Store
 tables/remote-select/.env
+tables/*/db/*.db
