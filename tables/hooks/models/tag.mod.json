@@ -30,7 +30,7 @@
   ],
   "relations": {},
   "values": [
-    { "id": 1, "user_id": 1, "label": "大侠", "color": "#FF0000" },
+    { "id": 1, "user_id": 1, "label": "默认颜色" },
     { "id": 2, "user_id": 1, "label": "古代", "color": "#FF6600" },
     { "id": 3, "user_id": 101, "label": "火箭", "color": "#FF0000" },
     { "id": 4, "user_id": 101, "label": "现代", "color": "#FF6600" }

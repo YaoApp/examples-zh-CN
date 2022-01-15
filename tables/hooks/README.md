@@ -158,7 +158,7 @@ function main(args, out, res) {
 
 当 ID 小于 100 时， 返回给定 ID 用户资料
 
-`yao run xiang.table.find 1`
+`yao run xiang.table.find user 1`
 
 ```json
 {
@@ -189,7 +189,7 @@ function main(args, out, res) {
 
 当 ID 大于 100 时，返回 ID=101 的用户资料
 
-`yao run xiang.table.find 102`
+`yao run xiang.table.find user 102`
 
 ```json
 {
@@ -217,6 +217,96 @@ function main(args, out, res) {
   ]
 }
 ```
+
+#### 1.2 `after:find`
+
+实现如果未指定标签颜色，则标签显示为 `灰色`
+
+使用 `after:find` hook, 循环检查 ID 标签的数值，如果标签颜色字段为空，则将颜色设置为灰色 `#efefef`。
+
+在 `user.tab.json` 数据表格描述中，声明 `after:find` hook 关联 `flows.hooks.user.tags_color` 处理器
+
+```json
+{
+  "name": "用户",
+  "version": "1.0.0",
+  "decription": "用户",
+  "bind": { "model": "user", "withs": { "tags": {}, "extra": {} } },
+  "hooks": {
+    "after:find": "flows.hooks.user.tags_color"
+  },
+  "apis": {},
+  "columns": {}
+}
+```
+
+`flows/hooks/user/tags_color.flow.json` 实现标签颜色检测，如果为空，则将颜色设置为灰色
+
+```json
+{
+  "label": "查询结果处理",
+  "version": "1.0.0",
+  "description": "After:Find",
+  "nodes": [
+    {
+      "name": "处理后的数据",
+      "script": "default"
+    }
+  ],
+  "output": "{{$res.处理后的数据}}"
+}
+```
+
+`flows/hooks/user/tags_color.default.js` 数据处理脚本
+
+```javascript
+function main(args, out, res) {
+  var data = args[0] || {}; // 读取表格 Find 处理器返回结果
+  var tags = data.tags || [];
+  for (var i in tags) {
+    var tag = tags[i] || {};
+    if (tag.color == "" || tag.color == undefined || tag.color == null) {
+      data["tags"][i]["color"] = "#efefef"; // 如果标签颜色为空, 则设定为灰色
+    }
+  }
+  return data; // 返回新结果
+}
+```
+
+调试表格 Find 处理器 ( 与 find API 返回结果一致 )
+
+ID=1 的用户数据中，`默认颜色` 标签被设置为灰色，在数据表中，这个字段数值为 `null`
+
+`yao run xiang.table.find user 1`
+
+```json
+{
+  "extra": {
+    "id": 1,
+    "title": "设计师",
+    "user_id": 1
+  },
+  "gender": "男",
+  "id": 1,
+  "name": "张无忌",
+  "tags": [
+    {
+      "color": "#efefef",
+      "id": 1,
+      "label": "默认颜色",
+      "user_id": 1
+    },
+    {
+      "color": "#FF6600",
+      "id": 2,
+      "label": "古代",
+      "user_id": 1
+    }
+  ]
+}
+```
+
+**以上为代码片段，[查看完成示例](tables/user.tab.json)**
 
 ### Search Hook
 

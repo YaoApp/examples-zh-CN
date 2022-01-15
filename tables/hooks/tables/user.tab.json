@@ -4,7 +4,8 @@
   "decription": "用户",
   "bind": { "model": "user", "withs": { "tags": {}, "extra": {} } },
   "hooks": {
-    "before:find": "flows.hooks.user.with_extra"
+    "before:find": "flows.hooks.user.with_extra",
+    "after:find": "flows.hooks.user.tags_color"
   },
   "apis": {},
   "columns": {},

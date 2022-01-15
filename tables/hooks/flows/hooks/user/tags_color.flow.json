@@ -1,0 +1,12 @@
+{
+  "label": "查询结果处理",
+  "version": "1.0.0",
+  "description": "After:Find",
+  "nodes": [
+    {
+      "name": "处理后的数据",
+      "script": "default"
+    }
+  ],
+  "output": "{{$res.处理后的数据}}"
+}
